@@ -63,3 +63,9 @@ if (optInt2 == 123) {
 } else {
     print("optInt2 != 123")
 }
+
+var optValue01 = Optional(123)
+var optValue02: Int? = 123
+
+var str01: String! = "Swift Optional"
+print(str01)
