@@ -1,3 +1,5 @@
+import Foundation
+
 func printHello() {
     print("안녕하세요")
 }
@@ -82,3 +84,78 @@ result.n
 //result.1
 //result.2
 
+protocol Wheel {
+    func spin()
+    func hold()
+}
+
+class Bicycle: Wheel {
+    var moveState = false
+    
+    func spin() {
+        self.pedal()
+    }
+    
+    func hold() {
+        self.pullBreak()
+    }
+    
+    func pedal() {
+        self.moveState = true
+    }
+    
+    func pullBreak() {
+        self.moveState = false
+    }
+}
+
+//let trans = Bicycle()
+let trans: Wheel = Bicycle()
+
+//trans.moveState
+//trans.pedal()
+//trans.pullBreak()
+trans.spin()
+trans.hold()
+
+protocol A {
+    func doA()
+}
+
+protocol B {
+    func doB()
+}
+
+class Impl: A, B {
+    func doA() {
+    }
+    
+    func doB() {
+    }
+    
+    func desc() -> String {
+        return "Class instance method"
+    }
+}
+
+var ipl: A & B = Impl()
+ipl.doA()
+ipl.doB()
+
+protocol Person {
+    var firstName: String { get set }
+    var lastName: String { get set }
+    var birthDate: Date { get set }
+    var profession: String { get }
+    
+    init (firstName: String, lastName: String, birthDate: Date)
+    
+    func updatePerson(person: Person) -> Person {
+        var newPerson: Person
+        // person을 갱신하는 코드는 여기에 위치한다.
+        return newPerson
+    }
+}
+
+var personArray = [Person]()
+var personnDict = [String: Person]()
