@@ -224,28 +224,28 @@ class FuelPump {
     }
 }
 
-class Car: FuelPumpDelegate {
-    var fuelPump = FuelPump(fuelGage: 100)
-    
-    init() {
-        self.fuelPump.delegate = self
-    }
-    
-    // fuelPump가 호출하는 메소드이다.
-    func lackFuel() {
-        // 연료를 보충한다.
-    }
-    
-    // fuelPump가 호출하는 메소드이다.
-    func fullFuel() {
-        // 연료 보충을 중단한다.
-    }
-    
-    // 자동차에 시동을 건다.
-    func start() {
-        fuelPump.startPump()
-    }
-}
+//class Car: FuelPumpDelegate {
+//    var fuelPump = FuelPump(fuelGage: 100)
+//
+//    init() {
+//        self.fuelPump.delegate = self
+//    }
+//
+//    // fuelPump가 호출하는 메소드이다.
+//    func lackFuel() {
+//        // 연료를 보충한다.
+//    }
+//
+//    // fuelPump가 호출하는 메소드이다.
+//    func fullFuel() {
+//        // 연료 보충을 중단한다.
+//    }
+//
+//    // 자동차에 시동을 건다.
+//    func start() {
+//        fuelPump.startPump()
+//    }
+//}
 
 class Man {
     var name: String?
@@ -313,3 +313,89 @@ foo(abc: ABC())
 
 func boo(abc: A & B) { }
 boo(abc: ABC())
+
+protocol Machine {
+    func join()
+}
+
+protocol Wheel: Machine {
+    func lotate()
+    
+    init(name: String, currentSpeed: Double)
+    
+}
+
+class Vehicle {
+    var currentSpeed = 0.0
+    var name = ""
+    
+    init(name: String, currentSpeed: Double) {
+        self.name = name
+        self.currentSpeed = currentSpeed
+    }
+    
+}
+
+class Car: Vehicle, Wheel {
+    required override init(name: String, currentSpeed: Double = 0.0) {
+        super.init(name: name, currentSpeed: currentSpeed)
+    }
+    
+    func join() {
+        // join parts
+    }
+    
+    func lotate() {
+        print("\(self.name)의 바퀴가 회전합니다.")
+    }
+}
+
+class Carpet: Vehicle, Machine {
+    func join() {
+        // join parts
+    }
+}
+
+var translist = [Vehicle]()
+translist.append(Car(name: "자동차", currentSpeed: 10.0))
+translist.append(Carpet(name: "양탄자", currentSpeed: 15.0))
+
+
+for trans in translist {
+    if let obj = trans as? Wheel {
+        obj.lotate()
+    } else {
+        print("\(trans.name)의 하위 타입 변환이 실패했습니다.")
+    }
+}
+
+@objc
+protocol MsgDelegate {
+    // 새로운 메시지가 도착했을 때 새로운 메시지의 개수를 델리게이트로 할당된 객체에 알려주는 역할
+    @objc optional func onReceive(new: Int)
+}
+
+class MsgCenter {
+    var delegate: MsgDelegate?
+    var newMsg: Int = 0
+    
+    func msgCheck() {
+        if newMsg > 0 {
+            // 새로운 메시지가 도착했다면
+            self.delegate?.onReceive?(new: self.newMsg)
+            self.newMsg = 0
+        }
+    }
+}
+
+class MsgWatch: MsgDelegate {
+    var msgCenter: MsgCenter?
+    
+    init(msgCenter: MsgCenter) {
+        self.msgCenter = msgCenter
+    }
+    
+    func onReceive(new: Int) {
+        print("\(new)건의 메시지가 도착했습니다.")
+    }
+}
